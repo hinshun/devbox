@@ -66,8 +66,8 @@ set shell=/bin/sh
 " Disable splash screen
 set shortmess+=I
 
-" Theme
-colorscheme Tomorrow-Night
+" Initialize colorscheme if loaded
+silent! colorscheme Tomorrow-Night
 
 " Turn on line number
 set number
@@ -251,7 +251,9 @@ augroup auglobal
   autocmd FileType markdown setlocal spell
 
   " Initialize Airline sections
-  autocmd VimEnter * call AirlineInit()
+  if exists('airline')
+    autocmd VimEnter * call AirlineInit()
+  end
 augroup END
 
 "===============================================================================
