@@ -1,8 +1,3 @@
-" Set augroup
-augroup auglobal
-  autocmd!
-augroup END
-
 " Turn on automatic indentation
 filetype plugin indent on
 
@@ -22,14 +17,14 @@ Plug 'hinshun/vim-tomorrow-theme'
 Plug 'bling/vim-airline'
 
 " Edit
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-commentary'
-Plug 'lokaltog/vim-easymotion'
-Plug 'osyo-manga/vim-over'
-Plug 'junegunn/vim-easy-align'
-Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
+Plug 'tpope/vim-repeat'                       " . repeat command for plugins
+Plug 'tpope/vim-surround'                     " surround modifier for parentheses, brackets, etc
+Plug 'tpope/vim-endwise'                      " end certain structures automatically depending on language
+Plug 'tpope/vim-commentary'                   " commenting
+Plug 'lokaltog/vim-easymotion'                " better motion
+Plug 'osyo-manga/vim-over'                    " preview regex
+Plug 'junegunn/vim-easy-align'                " better alignment
+Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' } " undo tree
 
 " Browsing
 Plug 'kien/ctrlp.vim'
@@ -61,10 +56,13 @@ endif
 "===============================================================================
 
 " Set default shell
-set shell=/bin/sh
+set shell=/bin/zsh
 
 " Disable splash screen
 set shortmess+=I
+
+" Enable 256 colors
+set t_Co=256
 
 " Initialize colorscheme if loaded
 silent! colorscheme Tomorrow-Night
@@ -80,9 +78,6 @@ set splitright
 set vb
 set t_vb=
 
-" Show current mode
-set showmode
-
 " Lower the delay of escaping out of other modes
 set timeout timeoutlen=200 ttimeoutlen=1
 
@@ -93,9 +88,6 @@ set noswapfile
 
 " Highlight current line cursor is on
 set cursorline
-
-" Show the current command being inputted
-set showcmd
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -177,7 +169,7 @@ map <leader>y "*y
 " <Leader>/: Clear highlighted searches
 nnoremap <Leader>/ :nohlsearch<cr>
 
-" <C-p>: Ctrl-P file searching
+" <C-p>: File searching
 nnoremap <leader>ct :CtrlPTag<cr>
 
 " <Leader>pi: Installs Plugins
@@ -186,14 +178,14 @@ map <leader>pi :PlugInstall<cr>
 " <Leader>ps: Displays the status of Plugins
 map <leader>ps :PlugStatus<cr>
 
-" <Leader>nt: Toggle NERDTree
+" <Leader>nt: Toggle file system explorer
 nnoremap <Leader>nt :NERDTreeToggle<cr>
 
-" <Leader>ag: Ag content searching
+" <Leader>ag: Fast content searching
 nnoremap <Leader>ag :Ag<space>
 
-" <Leader>o: Open current file in Google Chrome
-nnoremap <Leader>o :exe '!open -a "/opt/homebrew-cask/Caskroom/google-chrome/latest/Google Chrome.app/" %'<cr>:redraw!<cr>
+" <Leader>ut: Undo Tree
+nnoremap <Leader>ut :GundoToggle<CR>
 
 "===============================================================================
 " Non-leader Key Mappings
@@ -201,9 +193,6 @@ nnoremap <Leader>o :exe '!open -a "/opt/homebrew-cask/Caskroom/google-chrome/lat
 
 " <C-c>: <ESC>
 inoremap <C-c> <esc>
-
-" Tab completion
-inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
 
 " Jump through Quickfix results
 nmap <silent> ]q :cnext<CR>
@@ -213,23 +202,9 @@ nmap <silent> [q :cprev<CR>
 " Functions
 "===============================================================================
 
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-p>"
-    endif
-endfunction
-
 "===============================================================================
 " Autocommands
 "===============================================================================
-
-" Use :Silent command like normal but with redraw
-command! -nargs=1 Silent
-      \ | execute ':silent !'.<q-args>
-      \ | execute ':redraw!'
 
 augroup auglobal
   " Wrap lines in QuickFix buffer so that characters will not get lost
@@ -246,9 +221,6 @@ augroup auglobal
 
   " Close vim if the only window open is NERDTree
   autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-  " Enable spellchecking for Markdown
-  autocmd FileType markdown setlocal spell
 
   " Initialize Airline sections
   if exists('airline')
@@ -272,8 +244,17 @@ let g:syntastic_html_tidy_quiet_messages = { "level" : "warnings" }
 
 " EasyMotion
 map <Leader> <Plug>(easymotion-prefix)
+map / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+map n <Plug>(easymotion-next)
+map N <Plug>(easymotion-prev)
+let g:EasyMotion_smartcase = 1
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz'
 hi link EasyMotionShade  Comment
+
+" EasyAlign
+vmap <Enter> <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " Airline
 if !exists('g:airline_symbols')
@@ -335,4 +316,3 @@ let g:ctrlp_map = '<C-p>'
 let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup -g "" -p ~/'
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 let g:ctrlp_use_caching = 0
-
