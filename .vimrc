@@ -23,6 +23,7 @@ Plug 'tpope/vim-endwise'                      " end certain structures automatic
 Plug 'tpope/vim-commentary'                   " commenting
 Plug 'lokaltog/vim-easymotion'                " better motion
 Plug 'osyo-manga/vim-over'                    " preview regex
+Plug 'junegunn/vim-peekaboo'                  " extends registers with preview mode
 Plug 'junegunn/vim-easy-align'                " better alignment
 Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' } " undo tree
 
@@ -64,6 +65,12 @@ set shortmess+=I
 " Enable 256 colors
 set t_Co=256
 
+" Always show statusline
+set laststatus=2
+
+" Enable unicode
+set encoding=utf-8
+
 " Initialize colorscheme if loaded
 silent! colorscheme Tomorrow-Night
 
@@ -99,11 +106,11 @@ set scrolloff=10
 set numberwidth=1
 
 " Open all folds initially
-set foldmethod=indent   	        " fold by indent level
-set nofoldenable        	        " dont fold by default
+set foldmethod=indent " fold by indent level
+set nofoldenable      " dont fold by default
 
 " Set level of folding
-set foldlevel=1        	          " start folding for level
+set foldlevel=1 " start folding for level
 
 " Allow changing buffer without saving it first
 set hidden
@@ -128,10 +135,10 @@ set magic
 let g:html_indent_tags = 'li\|p'
 
 " Tab settings
-set tabstop=2                     " width of tab
-set shiftwidth=2                  " shifting >>, <<, ==
-set softtabstop=2                 " tab key <TAB>, <BS>
-set expandtab	                    " always use softtabstop for <TAB>
+set tabstop=2     " width of tab
+set shiftwidth=2  " shifting >>, <<, ==
+set softtabstop=2 " tab key <TAB>, <BS>
+set expandtab     " always use softtabstop for <TAB>
 set smartindent
 
 " Text display settings
@@ -141,7 +148,7 @@ set linebreak
 
 " Wild menu settings
 set wildmode=list:longest,full
-set wildmenu "turn on wild menu
+set wildmenu                "turn on wild menu
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*DS_Store*
 set wildignore+=vendor/rails/**
@@ -288,7 +295,7 @@ function! AirLineTheme(palette)
       \ 'insert': green,
       \ 'replace': magenta,
       \ 'visual': orange
-      \}
+      \ }
 
     for key in keys(modes)
       let a:palette[key].airline_a = modes[key]
