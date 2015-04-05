@@ -23,9 +23,10 @@ WORKDIR $HOME
 
 # Setup prezto
 RUN git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto" \
-  && chsh -s /bin/zsh \
+  && exec zsh \
+  && setopt EXTENDED_GLOB \
   && for rc in $HOME/.zprezto/runcoms/z* ; do ln -s "${rc}" "$HOME/.$(basename $rc)" ; done \
-  && exec zsh && setopt EXTENDED_GLOB
+  && chsh -s /bin/zsh
 
 # Install vim plugins
 RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
