@@ -18,18 +18,19 @@ VOLUME /var/shared
 
 # Copy over home directory files
 ENV HOME /home
-COPY . $HOME
+COPY .* $HOME/
 WORKDIR $HOME
 
 # Setup prezto
-RUN chmod +x setup_prezto.sh \
-  && sync \
-  && ./setup_prezto.sh \
-  && rm setup_prezto.sh
+RUN git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto" \
+  && chsh -s /bin/zsh \
+  && for rc in $HOME/.zprezto/runcoms/z* ; do ln -s "${rc}" "$HOME/.$(basename $rc)" ; done \
+  && exec zsh && setopt EXTENDED_GLOB
 
 # Install vim plugins
 RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
+    && mkdir -p ~/.vim/plugged \
     && vim +PlugInstall +qall
 
 CMD ["zsh"]
