@@ -1,12 +1,8 @@
-FROM ubuntu:14.04
+FROM debian:jessie
 MAINTAINER Edgar Lee "edgar@brackety.co"
 
-# Use policy-rc.d to prevent services from starting automatically during apt-get
-RUN echo exit 101 > /usr/sbin/policy-rc.d \
-  && chmod +x /usr/sbin/policy-rc.d
-
 # Get development tools
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN apt-get update && apt-get install -y \
     zsh \
     vim \
     tmux \
