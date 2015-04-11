@@ -1,6 +1,6 @@
-[submodule "dotfiles"]
-	path = dotfiles
+[submodule ".dotfiles"]
+	path = .dotfiles
 	url = https://github.com/hinshun/dotfiles.git
-[submodule "prezto"]
-	path = prezto
+[submodule ".zprezto"]
+	path = .zprezto
 	url = https://github.com/hinshun/prezto.git
