@@ -2,7 +2,8 @@ FROM debian:jessie
 MAINTAINER Edgar Lee "edgar@brackety.co"
 
 # Install dependencies & clean up
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive \
+    apt-get install -y --no-install-recommends \
     apt-transport-https \
     ca-certificates \
     locales \
@@ -31,14 +32,17 @@ ENV HOME /home
 WORKDIR $HOME
 
 # Better zsh with prezto
-RUN git clone --recursive https://github.com/hinshun/prezto.git "${ZDOTDIR:-$HOME}/.zprezto" \
+RUN git clone --recursive https://github.com/hinshun/prezto.git \
+  "${ZDOTDIR:-$HOME}/.zprezto" \
   && chsh -s /bin/zsh \
-  && for rc in $HOME/.zprezto/runcoms/z* ; do ln -s "${rc}" "$HOME/.$(basename $rc)" ; done \
+  && for rc in $HOME/.zprezto/runcoms/z* ; do \
+  ln -s "${rc}" "$HOME/.$(basename $rc)" ; done \
   && exec zsh && setopt EXTENDED_GLOB
 
 # Dot it up
 RUN git clone https://github.com/hinshun/dotfiles.git "$HOME/.dotfiles" \
-  && for rc in $HOME/.dotfiles/* ; do ln -s "${rc}" "$HOME/.$(basename $rc)" ; done
+  && for rc in $HOME/.dotfiles/* ; do \
+  ln -s "${rc}" "$HOME/.$(basename $rc)" ; done
 
 # Install vim plugins
 RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
