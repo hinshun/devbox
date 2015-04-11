@@ -32,16 +32,15 @@ ENV HOME /home
 WORKDIR $HOME
 
 # Better zsh with prezto
-RUN git clone --recursive https://github.com/hinshun/prezto.git \
-  "${ZDOTDIR:-$HOME}/.zprezto" \
-  && chsh -s /bin/zsh \
+COPY prezto $HOME/.zprezto
+RUN chsh -s /bin/zsh \
   && for rc in $HOME/.zprezto/runcoms/z* ; do \
   ln -s "${rc}" "$HOME/.$(basename $rc)" ; done \
   && exec zsh && setopt EXTENDED_GLOB
 
 # Dot it up
-RUN git clone https://github.com/hinshun/dotfiles.git "$HOME/.dotfiles" \
-  && for rc in $HOME/.dotfiles/* ; do \
+COPY dotfiles $HOME/.dotfiles
+RUN for rc in $HOME/.dotfiles/* ; do \
   ln -s "${rc}" "$HOME/.$(basename $rc)" ; done
 
 # Install vim plugins
