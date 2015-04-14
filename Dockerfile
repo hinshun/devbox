@@ -8,6 +8,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive \
     ca-certificates \
     locales \
     curl \
+    ssh \
     zsh \
     vim \
     git \
