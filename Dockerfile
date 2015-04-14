@@ -31,10 +31,6 @@ RUN cp /usr/share/zoneinfo/Canada/Eastern /etc/localtime \
     && /usr/sbin/update-locale LANG=en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
-# Create shared volume for SSH keys and other files from host
-RUN mkdir -p /var/shared
-VOLUME /var/shared
-
 # Home sweet home
 ENV HOME /home
 WORKDIR $HOME
