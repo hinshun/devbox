@@ -1,13 +1,11 @@
-FROM debian:jessie
+FROM ruby:2.2-slim
 MAINTAINER Edgar Lee "edgar@brackety.co"
 
 # Install dependencies & clean up
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends \
     apt-transport-https \
-    ca-certificates \
     locales \
-    curl \
     ssh \
     zsh \
     vim \
@@ -17,6 +15,13 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# UTF-8
+RUN cp /usr/share/zoneinfo/Canada/Eastern /etc/localtime \
+    && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
+    && /usr/sbin/locale-gen \
+    && /usr/sbin/update-locale LANG=en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+
 # Install docker & docker-compose
 RUN curl -fLo /usr/local/bin/docker \
     https://get.docker.io/builds/Linux/x86_64/docker-latest \
@@ -25,17 +30,15 @@ RUN curl -fLo /usr/local/bin/docker \
     https://github.com/docker/compose/releases/download/1.1.0/docker-compose-`uname -s`-`uname -m` \
     && chmod +x /usr/local/bin/docker-compose
 
-# UTF-8
-RUN cp /usr/share/zoneinfo/Canada/Eastern /etc/localtime \
-    && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
-    && /usr/sbin/locale-gen \
-    && /usr/sbin/update-locale LANG=en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
-
 # Home sweet home
 ENV HOME /home
 WORKDIR $HOME
 COPY . $HOME
+
+# Install gems
+RUN gem install tmuxinator \
+  && curl -fLo $HOME/.bin/tmuxinator.zsh --create-dirs \
+  https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.zsh
 
 # Better zsh with prezto
 RUN chsh -s /bin/zsh \
