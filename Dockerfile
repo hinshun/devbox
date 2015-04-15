@@ -30,15 +30,17 @@ RUN curl -fLo /usr/local/bin/docker \
     https://github.com/docker/compose/releases/download/1.1.0/docker-compose-`uname -s`-`uname -m` \
     && chmod +x /usr/local/bin/docker-compose
 
-# Home sweet home
+# Prepare home
 ENV HOME /home
 WORKDIR $HOME
-COPY . $HOME
 
 # Install gems
 RUN gem install tmuxinator \
   && curl -fLo $HOME/.bin/tmuxinator.zsh --create-dirs \
   https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.zsh
+
+# Home sweet home
+COPY . $HOME
 
 # Better zsh with prezto
 RUN chsh -s /bin/zsh \
