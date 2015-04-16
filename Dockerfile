@@ -57,16 +57,18 @@ RUN gem install \
 ENV HOME /home
 WORKDIR $HOME
 
-# Get tmuxinator completion
-RUN curl -fLo $HOME/.bin/tmuxinator.zsh --create-dirs \
-  https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.zsh
-
 # Better zsh with prezto
 COPY prezto $HOME/.zprezto
 RUN chsh -s /bin/zsh \
   && for rc in $HOME/.zprezto/runcoms/z* ; do \
   ln -s "${rc}" "$HOME/.$(basename $rc)" ; done \
   && exec zsh && setopt EXTENDED_GLOB
+
+# Add zsh completion
+RUN curl -fLo $HOME/.zprezto/modules/completion/external/src/_tmuxinator \
+  https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.zsh \
+  && curl -fLo $HOME/.zprezto/modules/completion/external/src/_docker \
+  https://raw.githubusercontent.com/docker/docker/master/contrib/completion/zsh/_docker
 
 # Dot it up
 COPY dotfiles $HOME/.dotfiles
