@@ -26,19 +26,22 @@ RUN cp /usr/share/zoneinfo/Canada/Eastern /etc/localtime \
 ENV LC_ALL en_US.UTF-8
 
 # Install docker & docker-compose
+ENV DOCKER_VERSION 1.6.0
+ENV DOCKER_COMPOSE_VERSION 1.2.0
 RUN curl -fLo /usr/local/bin/docker \
-    https://get.docker.io/builds/Linux/x86_64/docker-latest \
+    https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION \
     && chmod +x /usr/local/bin/docker \
     && curl -fLo /usr/local/bin/docker-compose \
-    https://github.com/docker/compose/releases/download/1.1.0/docker-compose-`uname -s`-`uname -m` \
+    https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-`uname -s`-`uname -m` \
     && chmod +x /usr/local/bin/docker-compose
 
 # Install node
 ENV NVM_DIR /usr/local/nvm
+ENV NVM_VERSION 0.24.1
 ENV NODE_VERSION 0.12
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/v$NODE_VERSION/bin:$PATH
-RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.24.1/install.sh | bash \
+RUN curl https://raw.githubusercontent.com/creationix/nvm/v$NVM_VERSION/install.sh | bash \
     && source $NVM_DIR/nvm.sh \
     && nvm install v$NODE_VERSION \
     && nvm use v$NODE_VERSION \
