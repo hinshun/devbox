@@ -1,5 +1,4 @@
 FROM ruby:2.2.2
-MAINTAINER Edgar Lee "edgar@brackety.co"
 
 # Install dependencies & clean up
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive \
