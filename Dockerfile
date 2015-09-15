@@ -56,6 +56,11 @@ RUN source $NVM_DIR/nvm.sh \
 RUN gem install \
   tmuxinator
 
+# Install go
+ENV GO_VERSION 1.5.1
+RUN curl -fL https://storage.googleapis.com/golang/go$GO_VERSION.linux-amd64.tar.gz \
+    | tar -C /usr/local -xz
+
 # Home sweet home
 ENV HOME /home
 WORKDIR $HOME
