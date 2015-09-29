@@ -1,4 +1,4 @@
-FROM ruby:2.2.2
+FROM ruby:2.2.3
 
 # Install dependencies & clean up
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive \
@@ -26,8 +26,8 @@ RUN cp /usr/share/zoneinfo/Canada/Eastern /etc/localtime \
 ENV LC_ALL en_US.UTF-8
 
 # Install docker & docker-compose
-ENV DOCKER_VERSION 1.6.0
-ENV DOCKER_COMPOSE_VERSION 1.2.0
+ENV DOCKER_VERSION 1.8.2
+ENV DOCKER_COMPOSE_VERSION 1.4.2
 RUN curl -fLo /usr/local/bin/docker \
     https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION \
     && chmod +x /usr/local/bin/docker \
@@ -37,8 +37,8 @@ RUN curl -fLo /usr/local/bin/docker \
 
 # Install node
 ENV NVM_DIR /usr/local/nvm
-ENV NVM_VERSION 0.24.1
-ENV NODE_VERSION 0.12
+ENV NVM_VERSION 0.27.1
+ENV NODE_VERSION 4.1.1
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/v$NODE_VERSION/bin:$PATH
 RUN curl https://raw.githubusercontent.com/creationix/nvm/v$NVM_VERSION/install.sh | bash \
